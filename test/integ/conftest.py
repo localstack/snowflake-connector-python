@@ -83,6 +83,35 @@ CONNECTION_PARAMETERS = {
     )
 
 
+# START changes for LocalStack
+
+
+@pytest.fixture(scope="session", autouse=True)
+def create_external_volume():
+    import boto3
+
+    # create S3 bucket in LocalStack
+    s3_client = boto3.client(
+        "s3",
+        endpoint_url="http://localhost:4566",
+        aws_access_key_id="test",
+        aws_secret_access_key="test",
+    )
+    s3_client.create_bucket(Bucket="test")
+
+    # create a local external volume which is required by some of the tests
+    query = (
+        "CREATE EXTERNAL VOLUME IF NOT EXISTS python_connector_iceberg_exvol STORAGE_LOCATIONS = "
+        "((NAME = 'sl1' STORAGE_PROVIDER='S3' STORAGE_BASE_URL='s3://test' "
+        "STORAGE_AWS_ROLE_ARN='arn:aws:iam::000000000000:role/test'))"
+    )
+    connection = create_connection("default")
+    connection.cursor().execute(query)
+
+
+# END changes for LocalStack
+
+
 @pytest.fixture(scope="session")
 def is_public_test() -> bool:
     return is_public_testaccount()

@@ -145,9 +145,11 @@ jobs:
         env:
           LOCALSTACK_API_KEY: ${{ secrets.LOCALSTACK_API_KEY }}
         run: |
-          docker pull localstack/snowflake &
+          image_name=localstack/snowflake
+          # image_name=whummer/snowflake-tmp
+          docker pull $image_name &
           pip install localstack
-          IMAGE_NAME=localstack/snowflake DEBUG=1 localstack start -d
+          IMAGE_NAME=$image_name DEBUG=1 localstack start -d
           localstack wait
 
 #      - name: Setup parameters file
@@ -178,6 +180,7 @@ jobs:
           PYTEST_ADDOPTS: --color=yes --tb=short
           TOX_PARALLEL_NO_SPINNER: 1
         shell: bash
+        timeout-minutes: 15
       - name: Combine coverages
         run: python -m tox run -e coverage --skip-missing-interpreters false
         shell: bash
