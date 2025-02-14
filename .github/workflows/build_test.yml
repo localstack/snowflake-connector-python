@@ -149,7 +149,7 @@ jobs:
           # image_name=whummer/snowflake-tmp
           docker pull $image_name &
           pip install localstack
-          IMAGE_NAME=$image_name DEBUG=1 localstack start -d
+          IMAGE_NAME=$image_name DEBUG=1 DOCKER_FLAGS='-e SF_LOG=trace' localstack start -d
           localstack wait
 
 #      - name: Setup parameters file

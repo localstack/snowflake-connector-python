@@ -172,9 +172,12 @@ CLOUD = os.getenv("cloud_provider", "dev")
 RUNNING_ON_GH = os.getenv("GITHUB_ACTIONS") == "true"
 
 ICEBERG_SUPPORTED = CLOUD in ICEBERG_ENVIRONMENTS and RUNNING_ON_GH or CLOUD == "dev"
-STRUCTURED_TYPES_SUPPORTED = (
-    CLOUD in STRUCTRED_TYPE_ENVIRONMENTS and RUNNING_ON_GH or CLOUD == "dev"
-)
+# STRUCTURED_TYPES_SUPPORTED = (
+#     CLOUD in STRUCTRED_TYPE_ENVIRONMENTS and RUNNING_ON_GH or CLOUD == "dev"
+# )
+# Note whummer (2024-12-29): setting this value to False, as otherwise invalid tests are being generated,
+# using, e.g., `CREATE TABLE(c1 ARRAY(FLOAT))` which is invalid in standard case (verified against real SF)
+STRUCTURED_TYPES_SUPPORTED = False
 
 # Generate all valid test cases. By using pytest.param with an id you can
 # run a specific test case easier like so:
