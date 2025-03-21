@@ -1596,6 +1596,9 @@ def test_resultbatch(
     assert total_rows == rowcount
 
 
+@pytest.mark.skip(
+    reason="Multi-batches and large result sets currently not yet working in LocalStack"
+)
 @pytest.mark.skipolddriver(reason="new feature in v2.5.0")
 @pytest.mark.parametrize(
     "result_format,patch_path",
