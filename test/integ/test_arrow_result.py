@@ -167,6 +167,13 @@ ICEBERG_UNSUPPORTED_TYPES = {
 STRUCTURED_TYPE_ENVIRONMENTS = {"SFCTEST0_AWS_US_WEST_2", "SNOWPARK_PYTHON_TEST"}
 ICEBERG_ENVIRONMENTS = {"SFCTEST0_AWS_US_WEST_2"}
 
+# ICEBERG_SUPPORTED = CLOUD in ICEBERG_ENVIRONMENTS and RUNNING_ON_GH or CLOUD == "dev"
+# STRUCTURED_TYPES_SUPPORTED = (
+#     CLOUD in STRUCTRED_TYPE_ENVIRONMENTS and RUNNING_ON_GH or CLOUD == "dev"
+# )
+# Note whummer (2024-12-29): setting this value to False, as otherwise invalid tests are being generated,
+# using, e.g., `CREATE TABLE(c1 ARRAY(FLOAT))` which is invalid in standard case (verified against real SF)
+STRUCTURED_TYPES_SUPPORTED = False
 
 # Generate all valid test cases. By using pytest.param with an id you can
 # run a specific test case easier like so:
@@ -1065,6 +1072,7 @@ def test_select_date(conn_cnx):
     finish(conn_cnx, table)
 
 
+@pytest.mark.skip(reason="LocalStack - currently incompatible with Snowflake emulator")
 @pytest.mark.parametrize("scale", range(10))
 @pytest.mark.parametrize("type", ["timestampntz", "timestampltz", "timestamptz"])
 def test_select_timestamp_with_scale(conn_cnx, scale, type):
