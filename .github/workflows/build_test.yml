@@ -167,7 +167,7 @@ jobs:
 
       - name: Start up LocalStack Snowflake
         env:
-          LOCALSTACK_API_KEY: ${{ secrets.LOCALSTACK_API_KEY }}
+          LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
         run: |
           image_name=localstack/snowflake
           # image_name=whummer/snowflake-tmp
