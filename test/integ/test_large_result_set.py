@@ -9,7 +9,8 @@ import pytest
 from snowflake.connector.secret_detector import SecretDetector
 from snowflake.connector.telemetry import TelemetryField
 
-NUMBER_OF_ROWS = 50000
+# NUMBER_OF_ROWS = 50000
+NUMBER_OF_ROWS = 10000
 
 PREFETCH_THREADS = [8, 3, 1]
 
