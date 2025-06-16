@@ -94,7 +94,7 @@ def test_put_get_with_aws(tmpdir, conn_cnx, from_path, caplog):
     aws_request_present = False
     expected_token_prefix = "X-Amz-Signature="
     for line in caplog.text.splitlines():
-        if ".amazonaws." in line:
+        if ".amazonaws." in line or "s3.localhost.localstack.cloud" in line:
             aws_request_present = True
             # getattr is used to stay compatible with old driver - before SECRET_STARRED_MASK_STR was added
             assert (
