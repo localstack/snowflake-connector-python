@@ -32,6 +32,9 @@ concurrency:
   cancel-in-progress: true
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
 
+env:
+  USE_PASSWORD: "true"
+
 jobs:
   lint:
     name: Check linting
