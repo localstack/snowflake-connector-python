@@ -34,6 +34,7 @@ concurrency:
 
 env:
   USE_PASSWORD: "true"
+  SF_CSV_IMPORT_MAX_ROWS: "30000"
 
 jobs:
   lint:
@@ -176,7 +177,7 @@ jobs:
           # image_name=whummer/snowflake-tmp
           docker pull $image_name &
           pip install localstack
-          IMAGE_NAME=$image_name DEBUG=1 DOCKER_FLAGS='-e SF_LOG=trace' localstack start -d
+          IMAGE_NAME=$image_name DEBUG=1 DOCKER_FLAGS='-e SF_LOG=trace -e SF_CSV_IMPORT_MAX_ROWS=30000' localstack start -d
           localstack wait
 
 #      - name: Setup parameters file
@@ -211,7 +212,7 @@ jobs:
          # To specify the test name (in single test mode) pass this env variable:
 #          SINGLE_TEST_NAME: test/path/filename.py::test_name
         shell: bash
-        timeout-minutes: 15
+        timeout-minutes: 20
       - uses: actions/upload-artifact@v4
         if: always()
         with:

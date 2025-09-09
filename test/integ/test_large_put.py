@@ -18,6 +18,10 @@ def test_put_copy_large_files(tmpdir, conn_cnx, db_parameters):
     # generates N files
     number_of_files = 2
     number_of_lines = 200000
+
+    # note: adjusted for compatibility with LocalStack emulator tests
+    number_of_lines_expected = int(os.getenv("SF_CSV_IMPORT_MAX_ROWS"))
+
     tmp_dir = generate_k_lines_of_n_files(
         number_of_lines, number_of_files, tmp_dir=str(tmpdir.mkdir("data"))
     )
@@ -91,7 +95,9 @@ ratio number(6,2))
                 cnt = 0
                 for rec in c:
                     cnt += rec[0]
-                assert cnt == number_of_files * number_of_lines, "Number of rows"
+                assert (
+                    cnt == number_of_files * number_of_lines_expected
+                ), "Number of rows"
             finally:
                 c.close()
     finally:
