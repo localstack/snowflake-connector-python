@@ -400,9 +400,11 @@ max_file_size=10000000
 @pytest.mark.flaky(reruns=3)
 def test_put_copy_many_files(tmpdir, conn_cnx, db_parameters):
     """Puts and Copies many_files."""
-    # generates N files
-    number_of_files = 100
-    number_of_lines = 1000
+
+    # generates N files - note: adjusted for LocalStack, to reduce CI test times
+    number_of_files = 50
+    number_of_lines = 500
+
     tmp_dir = generate_k_lines_of_n_files(
         number_of_lines, number_of_files, tmp_dir=str(tmpdir.mkdir("data"))
     )
