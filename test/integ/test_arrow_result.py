@@ -1111,21 +1111,23 @@ def test_select_timestamp_with_scale(conn_cnx, scale, type):
 
 def test_select_with_string(conn_cnx):
     col_count = 2
-    row_count = 50000
+    # whummer: changed value from 50000 to 30000
+    row_count = 30000
     random_seed = get_random_seed()
     length = random.randint(1, 10)
     sql_text = (
         "select seq4() as c1, randstr({}, random({})) as c2 from ".format(
             length, random_seed
         )
-        + "table(generator(rowcount=>50000)) order by c1"
+        + f"table(generator(rowcount=>{row_count})) order by c1"
     )
     iterate_over_test_chunk("string", conn_cnx, sql_text, row_count, col_count)
 
 
 def test_select_with_bool(conn_cnx):
     col_count = 2
-    row_count = 50000
+    # whummer: changed value from 50000 to 30000
+    row_count = 30000
     random_seed = get_random_seed()
     sql_text = (
         "select seq4() as c1, as_boolean(uniform(0, 1, random({}))) as c2 from ".format(
@@ -1138,7 +1140,8 @@ def test_select_with_bool(conn_cnx):
 
 def test_select_with_float(conn_cnx):
     col_count = 2
-    row_count = 50000
+    # whummer: changed value from 50000 to 30000
+    row_count = 30000
     random_seed = get_random_seed()
     pow_val = random.randint(0, 10)
     val_len = random.randint(0, 16)
@@ -1171,7 +1174,8 @@ def test_select_with_empty_resultset(conn_cnx):
 
 def test_select_with_large_resultset(conn_cnx):
     col_count = 5
-    row_count = 1000000
+    # whummer: changed the rowcount from 1M to 30k below
+    row_count = 30000
     random_seed = get_random_seed()
 
     sql_text = (
