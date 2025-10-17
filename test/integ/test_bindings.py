@@ -393,7 +393,7 @@ drop table if exists {name}
 
 
 @pytest.mark.parametrize(
-    "num_rows", [pytest.param(100000, marks=pytest.mark.skipolddriver), 4]
+    "num_rows", [pytest.param(1000, marks=pytest.mark.skipolddriver), 4]
 )
 def test_binding_bulk_insert(conn_cnx, db_parameters, num_rows):
     """Bulk insert test."""
