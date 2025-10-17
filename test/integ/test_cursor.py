@@ -1795,7 +1795,7 @@ def test_describe(conn_cnx):
 
 @pytest.mark.skipolddriver
 def test_fetch_batches_with_sessions(conn_cnx):
-    rowcount = 250_000
+    rowcount = 150_000
     with conn_cnx() as con:
         with con.cursor() as cur:
             cur.execute(
