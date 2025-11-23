@@ -1553,7 +1553,7 @@ def test_resultbatch(
         },
         client_fetch_use_mp=client_fetch_use_mp,
     ) as con:
-        with capture_sf_telemetry.patch_connection(con) as telemetry_data:
+        with capture_sf_telemetry.patch_connection(con):
             with con.cursor() as cur:
                 cur.execute(
                     f"select seq4() from table(generator(rowcount => {rowcount}));"
@@ -1566,10 +1566,11 @@ def test_resultbatch(
                     isinstance(p, expected_chunk_type) for p in pre_pickle_partitions
                 )
                 pickle_str = pickle.dumps(pre_pickle_partitions)
-                assert any(
-                    t.message["type"] == TelemetryField.GET_PARTITIONS_USED.value
-                    for t in telemetry_data.records
-                )
+                # note (whummer): commenting out the check below, as telemetry is disabled in the emulator
+                # assert any(
+                #     t.message["type"] == TelemetryField.GET_PARTITIONS_USED.value
+                #     for t in telemetry_data.records
+                # )
     post_pickle_partitions: list[ResultBatch] = pickle.loads(pickle_str)
     total_rows = 0
     # Make sure the batches can be iterated over individually
