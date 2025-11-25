@@ -64,7 +64,9 @@ def _test_runner(
         stage_name = special_stage_name or random_name_for_temp_object(
             TempObjectType.STAGE
         )
-        cursor.execute(f"CREATE OR REPLACE SCOPED TEMP STAGE {stage_name}")
+        # note(whummer): removing "SCOPED" keyword below, to avoid `Unsupported feature 'SCOPED_TEMPORARY'` error
+        # cursor.execute(f"CREATE OR REPLACE SCOPED TEMP STAGE {stage_name}")
+        cursor.execute(f"CREATE OR REPLACE TEMP STAGE {stage_name}")
         expected_content = "hello, world"
         with TemporaryDirectory() as temp_dir:
             base_file_name = special_base_file_name or "test.txt"
